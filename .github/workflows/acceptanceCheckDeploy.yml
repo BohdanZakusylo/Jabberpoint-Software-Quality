@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: JabberPoint-Software-Quality-1.0-ACCEPTANCE-SNAPSHOT
-          path: /home/runner/work/JabberPoint-SoftwareQuality/JabberPoint-SoftwareQuality/target/
+          path: /home/runner/work/Jabberpoint-Software-Quality/Jabberpoint-Software-Quality/target/
 
       - name: Authenticate with Google Cloud
         uses: google-github-actions/auth@v2
@@ -44,8 +44,8 @@ jobs:
           project_id: github-actions-jar-deployment
 
       - name: List contents of /home/runner/work/
-        run: ls /home/runner/work/JabberPoint-SoftwareQuality/JabberPoint-SoftwareQuality/target/
+        run: ls /home/runner/work/Jabberpoint-Software-Quality/Jabberpoint-Software-Quality/target/
 
         with:
-          path: /home/runner/work/JabberPoint-SoftwareQuality/JabberPoint-SoftwareQuality/target/JabberPoint-Software-Quality-1.0-ACCEPTANCE-SNAPSHOT.jar
+          path: /home/runner/work/Jabberpoint-Software-Quality/Jabberpoint-Software-Quality/target/JabberPoint-Software-Quality-1.0-ACCEPTANCE-SNAPSHOT.jar
           destination: software-quality-jar/acceptance/
