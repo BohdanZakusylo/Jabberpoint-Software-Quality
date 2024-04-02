@@ -12,4 +12,10 @@ class MainTest
     {
         assertEquals(2, Main.testMaven());
     }
+
+    @Test
+    void testDtap()
+    {
+        assertEquals(3, Main.testDtap());
+    }
 }
