@@ -11,4 +11,9 @@ public class Main
     {
         return 2;
     }
+
+    public static int testDtap()
+    {
+        return 3;
+    }
 }
