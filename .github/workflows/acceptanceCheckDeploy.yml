@@ -47,4 +47,4 @@ jobs:
         uses: google-github-actions/upload-cloud-storage@v2
         with:
           path: /home/runner/work/Jabberpoint-Software-Quality/Jabberpoint-Software-Quality/target/JabberPoint-Software-Quality-1.0-SNAPSHOT.jar
-          destination: software-quality-jar/production/
+          destination: acceptance_bucket/
