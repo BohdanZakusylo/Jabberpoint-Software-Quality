@@ -33,7 +33,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: JabberPoint-Software-Quality-1.0-ACCEPTANCE-SNAPSHOT
+          name: JabberPoint-Software-Quality-1.0-SNAPSHOT
           path: /home/runner/work/Jabberpoint-Software-Quality/Jabberpoint-Software-Quality/target/
 
       - name: Authenticate with Google Cloud
@@ -43,9 +43,8 @@ jobs:
           credentials_json: ${{ secrets.JAR_DEPLOYMENT_KEY }}
           project_id: github-actions-jar-deployment
 
-      - name: List contents of /home/runner/work/
-        run: ls /home/runner/work/Jabberpoint-Software-Quality/Jabberpoint-Software-Quality/target/
-
+      - name: Upload JAR file to Google Cloud Storage
+        uses: google-github-actions/upload-cloud-storage@v2
         with:
-          path: /home/runner/work/Jabberpoint-Software-Quality/Jabberpoint-Software-Quality/target/JabberPoint-Software-Quality-1.0-ACCEPTANCE-SNAPSHOT.jar
-          destination: software-quality-jar/acceptance/
+          path: /home/runner/work/Jabberpoint-Software-Quality/Jabberpoint-Software-Quality/target/JabberPoint-Software-Quality-1.0-SNAPSHOT.jar
+          destination: software-quality-jar/production/
