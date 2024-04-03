@@ -1,3 +1,5 @@
+package com.bohdanvlad;
+
 import java.awt.MenuBar;
 import java.awt.Frame;
 import java.awt.Menu;
@@ -19,12 +21,12 @@ import javax.swing.JOptionPane;
  * @version 1.6 2014/05/16 Sylvia Stuurman
  */
 public class MenuController extends MenuBar {
-	
+
 	private Frame parent; // the frame, only used as parent for the Dialogs
 	private Presentation presentation; // Commands are given to the presentation
-	
+
 	private static final long serialVersionUID = 227L;
-	
+
 	protected static final String ABOUT = "About";
 	protected static final String FILE = "File";
 	protected static final String EXIT = "Exit";
@@ -37,10 +39,10 @@ public class MenuController extends MenuBar {
 	protected static final String PREV = "Prev";
 	protected static final String SAVE = "Save";
 	protected static final String VIEW = "View";
-	
+
 	protected static final String TESTFILE = "test.xml";
 	protected static final String SAVEFILE = "dump.xml";
-	
+
 	protected static final String IOEX = "IO Exception: ";
 	protected static final String LOADERR = "Load Error";
 	protected static final String SAVEERR = "Save Error";
@@ -59,7 +61,7 @@ public class MenuController extends MenuBar {
 					xmlAccessor.loadFile(presentation, TESTFILE);
 					presentation.setSlideNumber(0);
 				} catch (IOException exc) {
-					JOptionPane.showMessageDialog(parent, IOEX + exc, 
+					JOptionPane.showMessageDialog(parent, IOEX + exc,
          			LOADERR, JOptionPane.ERROR_MESSAGE);
 				}
 				parent.repaint();
@@ -79,7 +81,7 @@ public class MenuController extends MenuBar {
 				try {
 					xmlAccessor.saveFile(presentation, SAVEFILE);
 				} catch (IOException exc) {
-					JOptionPane.showMessageDialog(parent, IOEX + exc, 
+					JOptionPane.showMessageDialog(parent, IOEX + exc,
 							SAVEERR, JOptionPane.ERROR_MESSAGE);
 				}
 			}

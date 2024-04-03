@@ -1,3 +1,5 @@
+package com.bohdanvlad;
+
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.ImageObserver;
@@ -38,7 +40,7 @@ public class Slide {
 		title = newTitle;
 	}
 
-	// Create TextItem of String, and add the TextItem 
+	// Create TextItem of String, and add the TextItem
 	public void append(int level, String message) {
 		append(new TextItem(level, message));
 	}

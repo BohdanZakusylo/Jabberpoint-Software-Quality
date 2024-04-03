@@ -1,3 +1,5 @@
+package com.bohdanvlad;
+
 import java.awt.Rectangle;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -23,7 +25,7 @@ import java.io.IOException;
 public class BitmapItem extends SlideItem {
   private BufferedImage bufferedImage;
   private String imageName;
-  
+
   protected static final String FILE = "File ";
   protected static final String NOTFOUND = " not found";
 
@@ -53,7 +55,7 @@ public class BitmapItem extends SlideItem {
 	public Rectangle getBoundingBox(Graphics g, ImageObserver observer, float scale, Style myStyle) {
 		return new Rectangle((int) (myStyle.indent * scale), 0,
 				(int) (bufferedImage.getWidth(observer) * scale),
-				((int) (myStyle.leading * scale)) + 
+				((int) (myStyle.leading * scale)) +
 				(int) (bufferedImage.getHeight(observer) * scale));
 	}
 

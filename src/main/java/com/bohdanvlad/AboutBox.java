@@ -1,3 +1,5 @@
+package com.bohdanvlad;
+
 import java.awt.Frame;
 import javax.swing.JOptionPane;
 

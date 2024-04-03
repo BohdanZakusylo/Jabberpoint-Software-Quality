@@ -1,3 +1,5 @@
+package com.bohdanvlad;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Dimension;
@@ -18,14 +20,14 @@ import javax.swing.JFrame;
  */
 
 public class SlideViewerComponent extends JComponent {
-		
+
 	private Slide slide; // current slide
 	private Font labelFont = null; // font for labels
 	private Presentation presentation = null; // the presentation
 	private JFrame frame = null;
-	
+
 	private static final long serialVersionUID = 227L;
-	
+
 	private static final Color BGCOLOR = Color.white;
 	private static final Color COLOR = Color.black;
 	private static final String FONTNAME = "Dialog";
@@ -35,7 +37,7 @@ public class SlideViewerComponent extends JComponent {
 	private static final int YPOS = 20;
 
 	public SlideViewerComponent(Presentation pres, JFrame frame) {
-		setBackground(BGCOLOR); 
+		setBackground(BGCOLOR);
 		presentation = pres;
 		labelFont = new Font(FONTNAME, FONTSTYLE, FONTHEIGHT);
 		this.frame = frame;
