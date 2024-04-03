@@ -33,7 +33,8 @@ public class TextItem extends SlideItem
 	private static final String EMPTYTEXT = "No Text Given";
 
 // a textitem of level level, with the text string
-	public TextItem(int level, String string) {
+	public TextItem(int level, String string)
+	{
 		super(level);
 		this.text = string;
 	}
@@ -44,27 +45,30 @@ public class TextItem extends SlideItem
 	}
 
 // give the text
-	public String getText() {
+	public String getText()
+	{
 		return this.text == null ? "" : text;
 	}
 
 // geef de AttributedString voor het item
-	public AttributedString getAttributedString(Style style, float scale) {
+	public AttributedString getAttributedString(Style style, float scale)
+	{
 		AttributedString attrStr = new AttributedString(getText());
 		attrStr.addAttribute(TextAttribute.FONT, style.getFont(scale), 0, this.text.length());
 		return attrStr;
 	}
 
 // give the bounding box of the item
-	public Rectangle getBoundingBox(Graphics g, ImageObserver observer,
-			float scale, Style myStyle) {
+	public Rectangle getBoundingBox(Graphics g, ImageObserver observer, float scale, Style myStyle)
+	{
 		List<TextLayout> layouts = getLayouts(g, myStyle, scale);
 		int xsize = 0, ysize = (int) (myStyle.leading * scale);
 		Iterator<TextLayout> iterator = layouts.iterator();
 		while (iterator.hasNext()) {
 			TextLayout layout = iterator.next();
 			Rectangle2D bounds = layout.getBounds();
-			if (bounds.getWidth() > xsize) {
+			if (bounds.getWidth() > xsize)
+			{
 				xsize = (int) bounds.getWidth();
 			}
 			if (bounds.getHeight() > 0) {
@@ -76,9 +80,10 @@ public class TextItem extends SlideItem
 	}
 
 // draw the item
-	public void draw(int x, int y, float scale, Graphics g,
-			Style myStyle, ImageObserver o) {
-		if (text == null || text.length() == 0) {
+	public void draw(int x, int y, float scale, Graphics g, Style myStyle, ImageObserver o)
+	{
+		if (text == null || text.length() == 0)
+		{
 			return;
 		}
 		List<TextLayout> layouts = getLayouts(g, myStyle, scale);
@@ -95,7 +100,8 @@ public class TextItem extends SlideItem
 		}
 	  }
 
-	private List<TextLayout> getLayouts(Graphics g, Style s, float scale) {
+	private List<TextLayout> getLayouts(Graphics g, Style s, float scale)
+	{
 		List<TextLayout> layouts = new ArrayList<TextLayout>();
 		AttributedString attrStr = getAttributedString(s, scale);
     	Graphics2D g2d = (Graphics2D) g;
@@ -109,7 +115,8 @@ public class TextItem extends SlideItem
     	return layouts;
 	}
 
-	public String toString() {
+	public String toString()
+	{
 		return "TextItem[" + getLevel()+","+getText()+"]";
 	}
 }

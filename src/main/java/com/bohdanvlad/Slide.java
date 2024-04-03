@@ -15,7 +15,8 @@ import java.util.Vector;
  * @version 1.6 2014/05/16 Sylvia Stuurman
  */
 
-public class Slide {
+public class Slide
+{
 	public final static int WIDTH = 1200;
 	public final static int HEIGHT = 800;
 	protected String title; // title is saved separately
@@ -23,48 +24,57 @@ public class Slide {
 
 	private SlideItemFactory textItemFactory;
 
-	public Slide() {
+	public Slide()
+	{
 		this.items = new Vector<SlideItem>();
 		this.textItemFactory = new TextItemFactory();
 	}
 
 	// Add a slide item
-	public void append(SlideItem anItem) {
+	public void append(SlideItem anItem)
+	{
 		this.items.addElement(anItem);
 	}
 
 	// give the title of the slide
-	public String getTitle() {
+	public String getTitle()
+	{
 		return title;
 	}
 
 	// change the title of the slide
-	public void setTitle(String newTitle) {
+	public void setTitle(String newTitle)
+	{
 		this.title = newTitle;
 	}
 
 	// Create TextItem of String, and add the TextItem
-	public void append(int level, String message) {
+	public void append(int level, String message)
+	{
 		append(this.textItemFactory.createSlideItem(level, message));
 	}
 
 	// give the  SlideItem
-	public SlideItem getSlideItem(int number) {
+	public SlideItem getSlideItem(int number)
+	{
 		return (SlideItem)this.items.elementAt(number);
 	}
 
 	// give all SlideItems in a Vector
-	public Vector<SlideItem> getSlideItems() {
+	public Vector<SlideItem> getSlideItems()
+	{
 		return this.items;
 	}
 
 	// give the size of the Slide
-	public int getSize() {
+	public int getSize()
+	{
 		return this.items.size();
 	}
 
 	// draw the slide
-	public void draw(Graphics g, Rectangle area, ImageObserver view) {
+	public void draw(Graphics g, Rectangle area, ImageObserver view)
+	{
 		float scale = getScale(area);
 	    int y = area.y;
 	// Title is handled separately
@@ -81,7 +91,8 @@ public class Slide {
 	  }
 
 	// Give the scale for drawing
-	private float getScale(Rectangle area) {
+	private float getScale(Rectangle area)
+	{
 		return Math.min(((float)area.width) / ((float)WIDTH), ((float)area.height) / ((float)HEIGHT));
 	}
 }
