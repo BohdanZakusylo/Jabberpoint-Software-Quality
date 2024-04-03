@@ -34,13 +34,23 @@ public class BitmapItem extends SlideItem
 	public BitmapItem(int level, String name) {
 		super(level);
 		this.imageName = name;
-		try {
+		try
+		{
 			this.bufferedImage = ImageIO.read(new File(this.imageName));
 		}
-		catch (IOException e) {
-			System.err.println(FILE + this.imageName + NOTFOUND) ;
-			this.imageName = "serclogo_fc.jpg";
+		catch (IOException e)
+		{
+			try
+			{
+				this.bufferedImage = ImageIO.read(new File("serclogo_fc.jpg"));
+			}
+			catch (IOException exception)
+			{
+				//TODO redo to normal idk
+				throw new IllegalArgumentException("No such file");
+			}
 		}
+
 	}
 
 // An empty bitmap-item
