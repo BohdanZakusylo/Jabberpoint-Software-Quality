@@ -1,5 +1,7 @@
 package com.bohdanvlad;
 
+import com.bohdanvlad.Style;
+
 import java.awt.Rectangle;
 import java.awt.Graphics;
 import java.awt.image.ImageObserver;
@@ -19,7 +21,7 @@ public abstract class SlideItem {
 	private int level = 0; // level of the slideitem
 
 	public SlideItem(int lev) {
-		level = lev;
+		this.level = lev;
 	}
 
 	public SlideItem() {
@@ -28,7 +30,7 @@ public abstract class SlideItem {
 
 // Give the level
 	public int getLevel() {
-		return level;
+		return this.level;
 	}
 
 // Give the bounding box

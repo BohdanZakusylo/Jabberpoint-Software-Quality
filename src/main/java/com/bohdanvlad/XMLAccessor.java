@@ -47,6 +47,16 @@ public class XMLAccessor extends Accessor {
     protected static final String UNKNOWNTYPE = "Unknown Element type";
     protected static final String NFE = "Number Format Exception";
 
+	private SlideItemFactory bitmapItemFactory;
+	private SlideItemFactory textItemFactory;
+
+	public XMLAccessor()
+	{
+		this.bitmapItemFactory = new BitmapFactory();
+		this.textItemFactory = new TextItemFactory();
+	}
+
+
 
     private String getTitle(Element element, String tagName) {
     	NodeList titles = element.getElementsByTagName(tagName);
@@ -103,11 +113,11 @@ public class XMLAccessor extends Accessor {
 		}
 		String type = attributes.getNamedItem(KIND).getTextContent();
 		if (TEXT.equals(type)) {
-			slide.append(new TextItem(level, item.getTextContent()));
+			slide.append(this.textItemFactory.createSlideItem(level, item.getTextContent()));
 		}
 		else {
 			if (IMAGE.equals(type)) {
-				slide.append(new BitmapItem(level, item.getTextContent()));
+				slide.append(this.bitmapItemFactory.createSlideItem(level, item.getTextContent()));
 			}
 			else {
 				System.err.println(UNKNOWNTYPE);

@@ -26,7 +26,8 @@ import java.util.ArrayList;
  * @version 1.6 2014/05/16 Sylvia Stuurman
  */
 
-public class TextItem extends SlideItem {
+public class TextItem extends SlideItem
+{
 	private String text;
 
 	private static final String EMPTYTEXT = "No Text Given";
@@ -34,7 +35,7 @@ public class TextItem extends SlideItem {
 // a textitem of level level, with the text string
 	public TextItem(int level, String string) {
 		super(level);
-		text = string;
+		this.text = string;
 	}
 
 // an empty textitem
@@ -44,13 +45,13 @@ public class TextItem extends SlideItem {
 
 // give the text
 	public String getText() {
-		return text == null ? "" : text;
+		return this.text == null ? "" : text;
 	}
 
 // geef de AttributedString voor het item
 	public AttributedString getAttributedString(Style style, float scale) {
 		AttributedString attrStr = new AttributedString(getText());
-		attrStr.addAttribute(TextAttribute.FONT, style.getFont(scale), 0, text.length());
+		attrStr.addAttribute(TextAttribute.FONT, style.getFont(scale), 0, this.text.length());
 		return attrStr;
 	}
 
