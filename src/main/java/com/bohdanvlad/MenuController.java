@@ -51,7 +51,7 @@ public class MenuController extends MenuBar
 	public MenuController(Frame frame, Presentation pres)
 	{
 		parent = frame;
-		presentation = pres;
+		this.presentation = pres;
 		MenuItem menuItem;
 		Menu fileMenu = new Menu(FILE);
 		fileMenu.add(menuItem = mkMenuItem(OPEN));
