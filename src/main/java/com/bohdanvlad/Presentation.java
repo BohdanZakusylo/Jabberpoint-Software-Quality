@@ -22,10 +22,20 @@ public class Presentation
 	private int currentSlideNumber = 0; // the slidenummer of the current Slide
 	private SlideViewerComponent slideViewComponent = null; // the viewcomponent of the Slides
 
+	private static Presentation instance;
+
 	public Presentation()
 	{
 		slideViewComponent = null;
 		clear();
+	}
+
+	public static Presentation getInstance()
+	{
+		if (instance == null) {
+			instance = new Presentation();
+		}
+		return instance;
 	}
 
 	public Presentation(SlideViewerComponent slideViewerComponent)

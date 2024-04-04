@@ -1,7 +1,6 @@
 package com.bohdanvlad;
 
 import javax.swing.JOptionPane;
-
 import java.io.IOException;
 
 /** JabberPoint Main Programma
@@ -22,15 +21,16 @@ public class JabberPoint
 {
 	protected static final String IOERR = "IO Error: ";
 	protected static final String JABERR = "Jabberpoint Error ";
-	protected static final String JABVERSION = "Jabberpoint 1.6 - OU version";
 
+	protected static final String JABVERSION = "Jabberpoint 1.6 - OU version";
 	/** Het Main Programma */
 	public static void main(String argv[])
 	{
 
 		Style.createStyles();
-		Presentation presentation = new Presentation();
+		Presentation presentation = Presentation.getInstance();
 		new SlideViewerFrame(JABVERSION, presentation);
+		JsonReader.getJsonParser();
 		try
 		{
 			if (argv.length == 0) { // een demo presentatie
