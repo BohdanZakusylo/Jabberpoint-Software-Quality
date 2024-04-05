@@ -8,6 +8,8 @@ import java.awt.MenuShortcut;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Objects;
 
 import javax.swing.JOptionPane;
 
@@ -20,9 +22,9 @@ import javax.swing.JOptionPane;
  * @version 1.5 2010/03/03 Sylvia Stuurman
  * @version 1.6 2014/05/16 Sylvia Stuurman
  */
-public class MenuController extends MenuBar
+public class MenuController extends MenuBar implements Command
 {
-
+	private HashMap<String, Command> commands;
 	private Frame parent; // the frame, only used as parent for the Dialogs
 	private Presentation presentation; // Commands are given to the presentation
 
@@ -50,8 +52,9 @@ public class MenuController extends MenuBar
 
 	public MenuController(Frame frame, Presentation pres)
 	{
-		parent = frame;
-		presentation = pres;
+		this.parent = frame;
+		this.presentation = pres;
+		this.commands = new HashMap<>();
 		MenuItem menuItem;
 		Menu fileMenu = new Menu(FILE);
 		fileMenu.add(menuItem = mkMenuItem(OPEN));
@@ -60,17 +63,19 @@ public class MenuController extends MenuBar
 			public void actionPerformed(ActionEvent actionEvent)
 			{
 				presentation.clear();
-				Accessor xmlAccessor = new XMLAccessor();
-				try
-				{
-					xmlAccessor.loadFile(presentation, TESTFILE);
-					presentation.setSlideNumber(0);
-				}
-				catch (IOException exc)
-				{
-					JOptionPane.showMessageDialog(parent, IOEX + exc,
-         			LOADERR, JOptionPane.ERROR_MESSAGE);
-				}
+				execute(OPEN, TESTFILE);
+				presentation.setSlideNumber(0);
+//				Accessor xmlAccessor = new XMLAccessor();
+//				try
+//				{
+//					xmlAccessor.loadFile(presentation, TESTFILE);
+//					presentation.setSlideNumber(0);
+//				}
+//				catch (IOException exc)
+//				{
+//					JOptionPane.showMessageDialog(parent, IOEX + exc,
+//         			LOADERR, JOptionPane.ERROR_MESSAGE);
+//				}
 				parent.repaint();
 			}
 		} );
@@ -88,16 +93,18 @@ public class MenuController extends MenuBar
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				Accessor xmlAccessor = new XMLAccessor();
-				try
-				{
-					xmlAccessor.saveFile(presentation, SAVEFILE);
-				}
-				catch (IOException exc)
-				{
-					JOptionPane.showMessageDialog(parent, IOEX + exc,
-							SAVEERR, JOptionPane.ERROR_MESSAGE);
-				}
+				execute(SAVE, SAVEFILE);
+//				Accessor xmlAccessor = new XMLAccessor();
+//				try
+//				{
+//					execute(SAVE, SAVEFILE);
+//					xmlAccessor.saveFile(presentation, SAVEFILE);
+//				}
+//				catch (IOException exc)
+//				{
+//					JOptionPane.showMessageDialog(parent, IOEX + exc,
+//							SAVEERR, JOptionPane.ERROR_MESSAGE);
+//				}
 			}
 		});
 		fileMenu.addSeparator();
@@ -154,5 +161,26 @@ public class MenuController extends MenuBar
 	public MenuItem mkMenuItem(String name)
 	{
 		return new MenuItem(name, new MenuShortcut(name.charAt(0)));
+	}
+
+	@Override
+	public void execute(Object command, Object filename)
+	{
+		if (!this.commands.containsKey((String) command)){return;}
+		this.commands.get((String) command).execute(this.presentation, filename);
+	}
+
+	public void addCommand(String name, Command command)
+	{
+		Objects.requireNonNull(command);
+		this.commands.put(name, command);
+	}
+
+	public void removeCommand(String name)
+	{
+		if (this.commands.containsKey(name))
+		{
+			this.commands.remove(name);
+		}
 	}
 }

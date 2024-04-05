@@ -2,6 +2,8 @@ package com.bohdanvlad;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
+import java.util.HashMap;
+import java.util.Objects;
 
 /** <p>This is the KeyController (KeyListener)</p>
  * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman
@@ -13,36 +15,60 @@ import java.awt.event.KeyAdapter;
  * @version 1.6 2014/05/16 Sylvia Stuurman
 */
 
-public class KeyController extends KeyAdapter
+public class KeyController extends KeyAdapter implements Command
 {
 	private Presentation presentation; // Commands are given to the presentation
+	private HashMap<Object, Command> commands;
 
 	public KeyController(Presentation p)
 	{
-		presentation = p;
+		this.presentation = p;
+		this.commands = new HashMap<>();
 	}
 
-	public void keyPressed(KeyEvent keyEvent)
+	public void keyPressed(KeyEvent keyEvent) //TODO: add multiple keys(keyevents as objects) to one command
 	{
-		switch(keyEvent.getKeyCode())
+		execute(keyEvent.getKeyCode(), this.presentation);
+//		switch(keyEvent.getKeyCode())
+//		{
+//			case KeyEvent.VK_PAGE_DOWN:
+//			case KeyEvent.VK_DOWN:
+//			case KeyEvent.VK_ENTER:
+//			case '+':
+//				presentation.nextSlide();
+//				break;
+//			case KeyEvent.VK_PAGE_UP:
+//			case KeyEvent.VK_UP:
+//			case '-':
+//				presentation.prevSlide();
+//				break;
+//			case 'q':
+//			case 'Q':
+//				System.exit(0);
+//				break; // Probably never reached!!
+//			default:
+//				break;
+//		}
+	}
+
+	@Override
+	public void execute(Object command, Object pres)
+	{
+		if (!this.commands.containsKey(command)){return;}
+		this.commands.get(command).execute(null, pres);
+	}
+
+	public void addCommand(String name, Command command)
+	{
+		Objects.requireNonNull(command);
+		this.commands.put(name, command);
+	}
+
+	public void removeCommand(String name)
+	{
+		if (this.commands.containsKey(name))
 		{
-			case KeyEvent.VK_PAGE_DOWN:
-			case KeyEvent.VK_DOWN:
-			case KeyEvent.VK_ENTER:
-			case '+':
-				presentation.nextSlide();
-				break;
-			case KeyEvent.VK_PAGE_UP:
-			case KeyEvent.VK_UP:
-			case '-':
-				presentation.prevSlide();
-				break;
-			case 'q':
-			case 'Q':
-				System.exit(0);
-				break; // Probably never reached!!
-			default:
-				break;
+			this.commands.remove(name);
 		}
 	}
 }
