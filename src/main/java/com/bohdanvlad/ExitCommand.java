@@ -4,10 +4,14 @@ public class ExitCommand extends PresentationCommand implements Command
 {
     private static final int EXITSTATUS = 0;
 
-    @Override
-    public void execute(Object obj, Object pres)
+    public ExitCommand(Presentation presentation)
     {
-        this.presentation = (Presentation) pres;
+        super(presentation);
+    }
+
+    @Override
+    public void execute(Object obj)
+    {
         this.presentation.exit(EXITSTATUS);
     }
 }

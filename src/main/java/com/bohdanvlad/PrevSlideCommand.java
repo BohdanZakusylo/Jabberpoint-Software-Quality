@@ -4,10 +4,14 @@ public class PrevSlideCommand extends PresentationCommand implements Command
 {
 
 
-    @Override
-    public void execute(Object obj, Object pres)
+    public PrevSlideCommand(Presentation presentation)
     {
-        this.presentation = (Presentation) pres;
+        super(presentation);
+    }
+
+    @Override
+    public void execute(Object obj)
+    {
         this.presentation.prevSlide();
     }
 }

@@ -2,9 +2,7 @@ package com.bohdanvlad;
 
 public interface Command
 {
-    public void execute(Object obj, Object obj1);
+    void execute(Object obj);
 
-//    void addCommand(String name, Command command);
-//
-//    void removeCommand(String name);
+//    void execute();
 }

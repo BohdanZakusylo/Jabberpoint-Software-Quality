@@ -4,11 +4,19 @@ import java.io.IOException;
 
 public class LoadCommand extends XMLAccessorCommand
 {
+    private static final int SLIDESETTER = 0;
+    public LoadCommand(Presentation presentation)
+    {
+        super(presentation);
+    }
+
     @Override
-    public void execute(Object pres, Object name)
+    public void execute(Object name)
     {
         try {
-            this.xmlAccessor.loadFile((Presentation) pres, (String) name);
+            this.presentation.clear();
+            this.xmlAccessor.loadFile(this.presentation, (String) name);
+            this.presentation.setSlideNumber(SLIDESETTER);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

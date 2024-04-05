@@ -15,60 +15,49 @@ import java.util.Objects;
  * @version 1.6 2014/05/16 Sylvia Stuurman
 */
 
-public class KeyController extends KeyAdapter implements Command
+public class KeyController extends KeyAdapter
 {
-	private Presentation presentation; // Commands are given to the presentation
 	private HashMap<Object, Command> commands;
 
 	public KeyController(Presentation p)
 	{
-		this.presentation = p;
 		this.commands = new HashMap<>();
+		//NextSlideCommand keys
+		this.commands.put(KeyEvent.VK_PAGE_DOWN, new NextSlideCommand(p));
+		this.commands.put(KeyEvent.VK_DOWN, new NextSlideCommand(p));
+		this.commands.put(KeyEvent.VK_ENTER, new NextSlideCommand(p));
+		this.commands.put('+', new NextSlideCommand(p));
+		//PrevSlideCommand keys
+		this.commands.put(KeyEvent.VK_PAGE_UP, new PrevSlideCommand(p));
+		this.commands.put(KeyEvent.VK_UP, new PrevSlideCommand(p));
+		this.commands.put('-', new PrevSlideCommand(p));
+		//ExitCommand keys
+		this.commands.put('q', new ExitCommand(p));
+		this.commands.put('Q', new ExitCommand(p));
 	}
 
-	public void keyPressed(KeyEvent keyEvent) //TODO: add multiple keys(keyevents as objects) to one command
+	public void keyPressed(KeyEvent keyEvent)
 	{
-		execute(keyEvent.getKeyCode(), this.presentation);
-//		switch(keyEvent.getKeyCode())
-//		{
-//			case KeyEvent.VK_PAGE_DOWN:
-//			case KeyEvent.VK_DOWN:
-//			case KeyEvent.VK_ENTER:
-//			case '+':
-//				presentation.nextSlide();
-//				break;
-//			case KeyEvent.VK_PAGE_UP:
-//			case KeyEvent.VK_UP:
-//			case '-':
-//				presentation.prevSlide();
-//				break;
-//			case 'q':
-//			case 'Q':
-//				System.exit(0);
-//				break; // Probably never reached!!
-//			default:
-//				break;
-//		}
+		executeCommand(keyEvent.getKeyCode());
 	}
 
-	@Override
-	public void execute(Object command, Object pres)
+	public void executeCommand(Object command)
 	{
 		if (!this.commands.containsKey(command)){return;}
-		this.commands.get(command).execute(null, pres);
+		this.commands.get(command).execute(null);
 	}
 
-	public void addCommand(String name, Command command)
+	public void addCommand(Object obj, Command command)
 	{
 		Objects.requireNonNull(command);
-		this.commands.put(name, command);
+		this.commands.put(obj, command);
 	}
 
-	public void removeCommand(String name)
+	public void removeCommand(Object obj)
 	{
-		if (this.commands.containsKey(name))
+		if (this.commands.containsKey(obj))
 		{
-			this.commands.remove(name);
+			this.commands.remove(obj);
 		}
 	}
 }

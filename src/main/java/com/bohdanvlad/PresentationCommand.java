@@ -4,6 +4,9 @@ public abstract class PresentationCommand
 {
     protected Presentation presentation;
 
-    public PresentationCommand() {}
+    public PresentationCommand(Presentation presentation)
+    {
+        this.presentation = presentation;
+    }
 
 }

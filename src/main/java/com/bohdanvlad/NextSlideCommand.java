@@ -3,10 +3,14 @@ package com.bohdanvlad;
 public class NextSlideCommand extends PresentationCommand implements Command
 {
 
-    @Override
-    public void execute(Object obj, Object pres)
+    public NextSlideCommand(Presentation presentation)
     {
-        this.presentation = (Presentation) pres;
+        super(presentation);
+    }
+
+    @Override
+    public void execute(Object obj)
+    {
         this.presentation.nextSlide();
     }
 }
