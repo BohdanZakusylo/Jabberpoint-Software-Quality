@@ -1,5 +1,11 @@
 package com.bohdanvlad;
 
+import com.bohdanvlad.fileAccessors.Accessor;
+import com.bohdanvlad.fileAccessors.XMLAccessor;
+import com.bohdanvlad.presentationComponents.Presentation;
+import com.bohdanvlad.presentationComponents.SlideViewerFrame;
+import com.bohdanvlad.style.Style;
+
 import javax.swing.JOptionPane;
 import java.io.IOException;
 
