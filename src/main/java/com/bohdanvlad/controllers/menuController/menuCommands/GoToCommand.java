@@ -15,7 +15,19 @@ public class GoToCommand extends PresentationCommand implements Command
     @Override
     public void execute(Object obj)
     {
-        int pageNumber = Integer.parseInt((String) obj);
-        this.presentation.setSlideNumber(pageNumber-1);
+        int pageNumber = Integer.parseInt((String) obj) - 1;
+        if (pageNumber > this.presentation.getSize())
+        {
+            this.presentation.setSlideNumber(this.presentation.getSize()-1);
+        }
+        if (pageNumber < 0)
+        {
+            this.presentation.setSlideNumber(0);
+        }
+        else
+        {
+            this.presentation.setSlideNumber(pageNumber);
+        }
+
     }
 }
