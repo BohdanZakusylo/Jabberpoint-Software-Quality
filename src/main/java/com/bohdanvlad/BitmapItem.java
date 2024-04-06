@@ -29,6 +29,7 @@ public class BitmapItem extends SlideItem
 
   protected static final String FILE = "File ";
   protected static final String NOTFOUND = " not found";
+  protected static final String DEFAULT_LOGO = "serclogo_fc.jpg";
 
 // level is equal to item-level; name is the name of the file with the Image
 	public BitmapItem(int level, String name)
@@ -43,15 +44,13 @@ public class BitmapItem extends SlideItem
 		{
 			try
 			{
-				this.bufferedImage = ImageIO.read(new File("serclogo_fc.jpg"));
+				this.bufferedImage = ImageIO.read(new File(DEFAULT_LOGO));
 			}
 			catch (IOException exception)
 			{
-				//TODO redo to normal idk
-				throw new IllegalArgumentException("No such file");
+				throw new IllegalArgumentException("No logo provided");
 			}
 		}
-
 	}
 
 // An empty bitmap-item
