@@ -26,11 +26,9 @@ public class JabberPoint
 	/** Het Main Programma */
 	public static void main(String argv[])
 	{
-
 		Style.createStyles();
 		Presentation presentation = Presentation.getPresentation();
 		new SlideViewerFrame(JABVERSION, presentation);
-		JsonReader.getJsonParser();
 		try
 		{
 			if (argv.length == 0) { // een demo presentatie

@@ -34,7 +34,6 @@ public class Presentation
 
 	public static Presentation getPresentation()
 	{
-		//volatile, synchronized
 		Presentation result = presentation;
 		if(result == null)
 		{
