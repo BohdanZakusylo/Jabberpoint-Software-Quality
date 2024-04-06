@@ -2,6 +2,8 @@ package com.bohdanvlad;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
+import java.util.HashMap;
+import java.util.Objects;
 
 /** <p>This is the KeyController (KeyListener)</p>
  * @author Ian F. Darwin, ian@darwinsys.com, Gert Florijn, Sylvia Stuurman
@@ -15,34 +17,47 @@ import java.awt.event.KeyAdapter;
 
 public class KeyController extends KeyAdapter
 {
-	private Presentation presentation; // Commands are given to the presentation
+	private HashMap<Object, Command> commands;
 
 	public KeyController(Presentation p)
 	{
-		presentation = p;
+		this.commands = new HashMap<>();
+		//NextSlideCommand keys
+		this.commands.put(KeyEvent.VK_PAGE_DOWN, new NextSlideCommand(p));
+		this.commands.put(KeyEvent.VK_DOWN, new NextSlideCommand(p));
+		this.commands.put(KeyEvent.VK_ENTER, new NextSlideCommand(p));
+		this.commands.put('+', new NextSlideCommand(p));
+		//PrevSlideCommand keys
+		this.commands.put(KeyEvent.VK_PAGE_UP, new PrevSlideCommand(p));
+		this.commands.put(KeyEvent.VK_UP, new PrevSlideCommand(p));
+		this.commands.put('-', new PrevSlideCommand(p));
+		//ExitCommand keys
+		this.commands.put('q', new ExitCommand(p));
+		this.commands.put('Q', new ExitCommand(p));
 	}
 
 	public void keyPressed(KeyEvent keyEvent)
 	{
-		switch(keyEvent.getKeyCode())
+		executeCommand(keyEvent.getKeyCode());
+	}
+
+	public void executeCommand(Object command)
+	{
+		if (!this.commands.containsKey(command)){return;}
+		this.commands.get(command).execute(null);
+	}
+
+	public void addCommand(Object obj, Command command)
+	{
+		Objects.requireNonNull(command);
+		this.commands.put(obj, command);
+	}
+
+	public void removeCommand(Object obj)
+	{
+		if (this.commands.containsKey(obj))
 		{
-			case KeyEvent.VK_PAGE_DOWN:
-			case KeyEvent.VK_DOWN:
-			case KeyEvent.VK_ENTER:
-			case '+':
-				presentation.nextSlide();
-				break;
-			case KeyEvent.VK_PAGE_UP:
-			case KeyEvent.VK_UP:
-			case '-':
-				presentation.prevSlide();
-				break;
-			case 'q':
-			case 'Q':
-				System.exit(0);
-				break; // Probably never reached!!
-			default:
-				break;
+			this.commands.remove(obj);
 		}
 	}
 }

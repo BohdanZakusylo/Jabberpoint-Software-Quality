@@ -7,7 +7,8 @@ import java.awt.MenuItem;
 import java.awt.MenuShortcut;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Objects;
 
 import javax.swing.JOptionPane;
 
@@ -22,9 +23,8 @@ import javax.swing.JOptionPane;
  */
 public class MenuController extends MenuBar
 {
-
+	private HashMap<String, Command> commands;
 	private Frame parent; // the frame, only used as parent for the Dialogs
-	private Presentation presentation; // Commands are given to the presentation
 
 	private static final long serialVersionUID = 227L;
 
@@ -50,8 +50,16 @@ public class MenuController extends MenuBar
 
 	public MenuController(Frame frame, Presentation pres)
 	{
-		parent = frame;
-		this.presentation = pres;
+		this.parent = frame;
+		this.commands = new HashMap<>();
+		this.commands.put(OPEN, new LoadCommand(pres));
+		this.commands.put(SAVE, new SaveCommand(pres));
+		this.commands.put(EXIT, new ExitCommand(pres));
+		this.commands.put(NEXT, new NextSlideCommand(pres));
+		this.commands.put(PREV, new PrevSlideCommand(pres));
+		this.commands.put(GOTO, new GoToCommand(pres));
+		this.commands.put(NEW, new NewCommand(pres));
+
 		MenuItem menuItem;
 		Menu fileMenu = new Menu(FILE);
 		fileMenu.add(menuItem = mkMenuItem(OPEN));
@@ -59,18 +67,7 @@ public class MenuController extends MenuBar
 		{
 			public void actionPerformed(ActionEvent actionEvent)
 			{
-				presentation.clear();
-				Accessor xmlAccessor = new XMLAccessor();
-				try
-				{
-					xmlAccessor.loadFile(presentation, TESTFILE);
-					presentation.setSlideNumber(0);
-				}
-				catch (IOException exc)
-				{
-					JOptionPane.showMessageDialog(parent, IOEX + exc,
-         			LOADERR, JOptionPane.ERROR_MESSAGE);
-				}
+				executeCommand(OPEN, TESTFILE);//todo: put testfile in constructor or leave here
 				parent.repaint();
 			}
 		} );
@@ -79,7 +76,7 @@ public class MenuController extends MenuBar
 		{
 			public void actionPerformed(ActionEvent actionEvent)
 			{
-				presentation.clear();
+				executeCommand(NEW, null);
 				parent.repaint();
 			}
 		});
@@ -88,16 +85,7 @@ public class MenuController extends MenuBar
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				Accessor xmlAccessor = new XMLAccessor();
-				try
-				{
-					xmlAccessor.saveFile(presentation, SAVEFILE);
-				}
-				catch (IOException exc)
-				{
-					JOptionPane.showMessageDialog(parent, IOEX + exc,
-							SAVEERR, JOptionPane.ERROR_MESSAGE);
-				}
+				executeCommand(SAVE, SAVEFILE);//todo: put savefile in constructor or leave here
 			}
 		});
 		fileMenu.addSeparator();
@@ -106,7 +94,7 @@ public class MenuController extends MenuBar
 		{
 			public void actionPerformed(ActionEvent actionEvent)
 			{
-				presentation.exit(0);
+				executeCommand(EXIT, null);
 			}
 		});
 		add(fileMenu);
@@ -116,7 +104,7 @@ public class MenuController extends MenuBar
 		{
 			public void actionPerformed(ActionEvent actionEvent)
 			{
-				presentation.nextSlide();
+				executeCommand(NEXT, null);
 			}
 		});
 		viewMenu.add(menuItem = mkMenuItem(PREV));
@@ -124,7 +112,7 @@ public class MenuController extends MenuBar
 		{
 			public void actionPerformed(ActionEvent actionEvent)
 			{
-				presentation.prevSlide();
+				executeCommand(PREV, null);
 			}
 		});
 		viewMenu.add(menuItem = mkMenuItem(GOTO));
@@ -133,8 +121,7 @@ public class MenuController extends MenuBar
 			public void actionPerformed(ActionEvent actionEvent)
 			{
 				String pageNumberStr = JOptionPane.showInputDialog((Object)PAGENR);
-				int pageNumber = Integer.parseInt(pageNumberStr);
-				presentation.setSlideNumber(pageNumber - 1);
+				executeCommand(GOTO, pageNumberStr);
 			}
 		});
 		add(viewMenu);
@@ -154,5 +141,25 @@ public class MenuController extends MenuBar
 	public MenuItem mkMenuItem(String name)
 	{
 		return new MenuItem(name, new MenuShortcut(name.charAt(0)));
+	}
+
+	public void executeCommand(Object command, Object filename)
+	{
+		if (!this.commands.containsKey((String) command)){return;}
+		this.commands.get((String) command).execute(filename);
+	}
+
+	public void addCommand(String name, Command command)
+	{
+		Objects.requireNonNull(command);
+		this.commands.put(name, command);
+	}
+
+	public void removeCommand(String name)
+	{
+		if (this.commands.containsKey(name))
+		{
+			this.commands.remove(name);
+		}
 	}
 }
