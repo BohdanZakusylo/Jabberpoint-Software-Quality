@@ -19,15 +19,13 @@ public class GoToCommand extends PresentationCommand implements Command
         if (pageNumber > this.presentation.getSize())
         {
             this.presentation.setSlideNumber(this.presentation.getSize()-1);
+            return;
         }
         if (pageNumber < 0)
         {
             this.presentation.setSlideNumber(0);
+            return;
         }
-        else
-        {
-            this.presentation.setSlideNumber(pageNumber);
-        }
-
+        this.presentation.setSlideNumber(pageNumber);
     }
 }
