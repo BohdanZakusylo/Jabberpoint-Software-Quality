@@ -28,7 +28,7 @@ public class JabberPoint
 	{
 
 		Style.createStyles();
-		Presentation presentation = Presentation.getInstance();
+		Presentation presentation = Presentation.getPresentation();
 		new SlideViewerFrame(JABVERSION, presentation);
 		JsonReader.getJsonParser();
 		try

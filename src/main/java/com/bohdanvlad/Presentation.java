@@ -1,5 +1,7 @@
 package com.bohdanvlad;
 
+import org.apache.commons.collections.set.PredicatedSortedSet;
+
 import java.util.ArrayList;
 
 
@@ -22,7 +24,7 @@ public class Presentation
 	private int currentSlideNumber = 0; // the slidenummer of the current Slide
 	private SlideViewerComponent slideViewComponent = null; // the viewcomponent of the Slides
 
-	private static Presentation instance;
+	private static volatile Presentation presentation;
 
 	public Presentation()
 	{
@@ -30,12 +32,24 @@ public class Presentation
 		clear();
 	}
 
-	public static Presentation getInstance()
+	public static Presentation getPresentation()
 	{
-		if (instance == null) {
-			instance = new Presentation();
+		//volatile, synchronized
+		Presentation result = presentation;
+		if(result == null)
+		{
+			//safer to use Presentation.class instead "this"
+			synchronized (Presentation.class)
+			{
+				result = presentation;
+				if(result == null)
+				{
+					presentation = result = new Presentation();
+				}
+			}
 		}
-		return instance;
+
+		return result;
 	}
 
 	public Presentation(SlideViewerComponent slideViewerComponent)
