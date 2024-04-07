@@ -36,7 +36,7 @@ public class Slide
 	}
 
 	// Add a slide item
-	public void append(SlideItem anItem)
+	public void appendSlideItem(SlideItem anItem)
 	{
 		this.items.addElement(anItem);
 	}
@@ -56,7 +56,7 @@ public class Slide
 	// Create TextItem of String, and add the TextItem
 	public void append(int level, String message)
 	{
-		append(this.textItemFactory.createSlideItem(level, message));
+		appendSlideItem(this.textItemFactory.createSlideItem(level, message));
 	}
 
 	// give the  SlideItem
@@ -96,7 +96,7 @@ public class Slide
 	  }
 
 	// Give the scale for drawing
-	private float getScale(Rectangle area)
+	public float getScale(Rectangle area)
 	{
 		return Math.min(((float)area.width) / ((float)WIDTH), ((float)area.height) / ((float)HEIGHT));
 	}

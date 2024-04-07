@@ -6,13 +6,14 @@ import com.bohdanvlad.presentationComponents.Slide;
 import com.bohdanvlad.slideItemCreator.factory.BitmapFactory;
 import com.bohdanvlad.slideItemCreator.factory.SlideItemFactory;
 import com.bohdanvlad.slideItemCreator.factory.TextItemFactory;
+import com.bohdanvlad.slideItemCreator.product.BitmapItem;
+import com.bohdanvlad.slideItemCreator.product.SlideItem;
+import com.bohdanvlad.style.Style;
 import org.junit.jupiter.api.Test;
 import com.bohdanvlad.presentationComponents.Presentation;
 import org.junit.jupiter.api.BeforeEach;
-
 import java.awt.*;
 import java.io.FileNotFoundException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class JabberPointTest
@@ -22,6 +23,10 @@ class JabberPointTest
     private SlideItemFactory bitmapFactory;
     private SlideItemFactory textItemFactory;
     private XMLAccessor xmlAccessor;
+    private SlideItem bitmapItem;
+    private Slide slide1;
+    private Style style1;
+
     @BeforeEach
     void setup()
     {
@@ -30,6 +35,8 @@ class JabberPointTest
         this.bitmapFactory = new BitmapFactory();
         this.textItemFactory = new TextItemFactory();
         this.xmlAccessor = new XMLAccessor();
+        this.slide1 = new Slide();
+        this.bitmapItem = this.bitmapFactory.createSlideItem(1, "some String");
     }
 
 
@@ -67,7 +74,7 @@ class JabberPointTest
         assertThrows(NullPointerException.class, ()-> this.xmlAccessor.loadFile(presentation, "test.xml"));
     }
 
-    @Test//TODO:check if ok
+    @Test
     void testXMLAccessor_loadFile_invalidInputBoth_shouldNotThrow_ShouldCatch()
     {
         //Catches FileNotFoundException locally if filename is wrong and stops
@@ -160,5 +167,49 @@ class JabberPointTest
         pres.append(new Slide());
         pres.append(new Slide());
         assertEquals(null, pres.getSlide(-1));
+    }
+
+    @Test
+    void getScale_AssertEquals_NormalRectangleArea()
+    {
+        Rectangle rectangle1 = new Rectangle(1000, 1000, 2000, 2000);
+        assertEquals(this.slide1.getScale(rectangle1), 1.6, 0.1);
+    }
+
+    @Test
+    void getScale_AssertEquals_AreaIs0()
+    {
+        Rectangle rectangle1 = new Rectangle(0, 0, 0, 0);
+        assertEquals(this.slide1.getScale(rectangle1), 0, 0.1);
+    }
+
+    @Test
+    void testClear_ArrayListSlideBecomesEmpty ()
+    {
+        this.presentation1.append(this.slide1);
+        this.presentation1.clear();
+        assertEquals(0, this.presentation1.getSize());
+    }
+
+    @Test
+    void testAmountOfPresentation_DemoPresentationAppends_AssertEquals()
+    {
+        this.demoPresentation1.loadFile(this.presentation1, "unusedString");
+        assertEquals(3, this.presentation1.getSize());
+    }
+
+    @Test
+    void testAmountOfPresentation_DemoPresentationAppends_AssertNotEquals()
+    {
+        this.demoPresentation1.loadFile(this.presentation1, "unusedString");
+        assertNotEquals(1, this.presentation1.getSize());
+    }
+
+    @Test
+    void testAmountOfPresentation_DemoPresentationAppendsAddOne_AssertEquals()
+    {
+        this.demoPresentation1.loadFile(this.presentation1, "unusedString");
+        this.presentation1.append(this.slide1);
+        assertEquals(4, this.presentation1.getSize());
     }
 }
