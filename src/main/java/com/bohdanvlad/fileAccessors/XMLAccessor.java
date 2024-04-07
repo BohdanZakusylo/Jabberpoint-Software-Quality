@@ -65,8 +65,6 @@ public class XMLAccessor extends Accessor
 		this.textItemFactory = new TextItemFactory();
 	}
 
-
-
     private String getTitle(Element element, String tagName)
 	{
     	NodeList titles = element.getElementsByTagName(tagName);

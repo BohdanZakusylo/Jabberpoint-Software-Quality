@@ -23,9 +23,9 @@ public class SlideViewerComponent extends JComponent
 {
 
 	private Slide slide; // current slide
-	private Font labelFont = null; // font for labels
-	private Presentation presentation = null; // the presentation
-	private JFrame frame = null;
+	private Font labelFont; // font for labels
+	private Presentation presentation; // the presentation
+	private JFrame frame;
 
 	private static final long serialVersionUID = 227L;
 
@@ -40,9 +40,11 @@ public class SlideViewerComponent extends JComponent
 	public SlideViewerComponent(Presentation pres, JFrame frame)
 	{
 		setBackground(BGCOLOR);
-		presentation = pres;
-		labelFont = new Font(FONTNAME, FONTSTYLE, FONTHEIGHT);
+
+		this.presentation = pres;
+		this.labelFont = new Font(FONTNAME, FONTSTYLE, FONTHEIGHT);
 		this.frame = frame;
+		this.slide = null;
 	}
 
 	public Dimension getPreferredSize()
@@ -52,14 +54,16 @@ public class SlideViewerComponent extends JComponent
 
 	public void update(Presentation presentation, Slide data)
 	{
-		if (data == null) {
+		if (data == null)
+		{
 			repaint();
 			return;
 		}
+
 		this.presentation = presentation;
 		this.slide = data;
 		repaint();
-		frame.setTitle(presentation.getTitle());
+		this.frame.setTitle(presentation.getTitle());
 	}
 
 // draw the slide
@@ -67,15 +71,15 @@ public class SlideViewerComponent extends JComponent
 	{
 		g.setColor(BGCOLOR);
 		g.fillRect(0, 0, getSize().width, getSize().height);
-		if (presentation.getSlideNumber() < 0 || slide == null)
+		if (this.presentation.getSlideNumber() < 0 || this.slide == null)
 		{
 			return;
 		}
-		g.setFont(labelFont);
+		g.setFont(this.labelFont);
 		g.setColor(COLOR);
-		g.drawString("Slide " + (1 + presentation.getSlideNumber()) + " of " +
-                 presentation.getSize(), XPOS, YPOS);
+		g.drawString("Slide " + (1 + this.presentation.getSlideNumber()) + " of " +
+				this.presentation.getSize(), XPOS, YPOS);
 		Rectangle area = new Rectangle(0, YPOS, getWidth(), (getHeight() - YPOS));
-		slide.draw(g, area, this);
+		this.slide.draw(g, area, this);
 	}
 }
