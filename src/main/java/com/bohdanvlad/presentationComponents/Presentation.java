@@ -21,7 +21,6 @@ public class Presentation
 	private ArrayList<Slide> showList; // an ArrayList with Slides
 	private int currentSlideNumber; // the slidenummer of the current Slide
 	private SlideViewerComponent slideViewComponent; // the viewcomponent of the Slides
-
 	private static volatile Presentation presentation;
 
 	public Presentation()
