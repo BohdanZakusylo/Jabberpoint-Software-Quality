@@ -31,6 +31,7 @@ public class Slide
 
 	public Slide()
 	{
+		this.title = "";
 		this.items = new Vector<SlideItem>();
 		this.textItemFactory = new TextItemFactory();
 	}
@@ -44,7 +45,7 @@ public class Slide
 	// give the title of the slide
 	public String getTitle()
 	{
-		return title;
+		return this.title;
 	}
 
 	// change the title of the slide
