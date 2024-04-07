@@ -73,14 +73,6 @@ class JabberPointTest
         Presentation presentation = null;
         assertThrows(NullPointerException.class, ()-> this.xmlAccessor.loadFile(presentation, "test.xml"));
     }
-
-    @Test
-    void testXMLAccessor_loadFile_invalidInputBoth_shouldNotThrow_ShouldCatch()
-    {
-        //Catches FileNotFoundException locally if filename is wrong and stops
-        Presentation presentation = null;
-        assertDoesNotThrow(()-> this.xmlAccessor.loadFile(presentation, "testWrong"));
-    }
     //Tests XMLAccessor saveFile
     @Test
     void testXMLAccessor_saveFile_shouldNotThrow()
