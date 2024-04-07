@@ -154,10 +154,10 @@ public class MenuController extends MenuBar
 		return new MenuItem(name, new MenuShortcut(name.charAt(0)));
 	}
 
-	public void executeCommand(Object command, Object filename)
+	public void executeCommand(String command, String filename)
 	{
-		if (!this.commands.containsKey((String) command)){return;}
-		this.commands.get((String) command).execute(filename);
+		if (!this.commands.containsKey(command)){return;}
+		this.commands.get(command).execute(filename);
 	}
 
 	public void addCommand(String name, Command command)
