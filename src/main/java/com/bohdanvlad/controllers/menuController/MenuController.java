@@ -78,7 +78,7 @@ public class MenuController extends MenuBar
 		{
 			public void actionPerformed(ActionEvent actionEvent)
 			{
-				executeCommand(OPEN, TESTFILE);//todo: put testfile in constructor or leave here
+				executeCommand(OPEN, TESTFILE);
 				parent.repaint();
 			}
 		} );
@@ -96,7 +96,7 @@ public class MenuController extends MenuBar
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				executeCommand(SAVE, SAVEFILE);//todo: put savefile in constructor or leave here
+				executeCommand(SAVE, SAVEFILE);
 			}
 		});
 		fileMenu.addSeparator();
