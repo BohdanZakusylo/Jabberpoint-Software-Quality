@@ -6,6 +6,7 @@ import java.io.IOException;
 public class LoadCommand extends XMLAccessorCommand
 {
     private static final int SLIDESETTER = 0;
+
     public LoadCommand(Presentation presentation)
     {
         super(presentation);
