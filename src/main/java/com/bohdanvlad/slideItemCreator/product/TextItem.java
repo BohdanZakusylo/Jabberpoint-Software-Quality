@@ -31,6 +31,8 @@ import java.util.ArrayList;
 
 public class TextItem extends SlideItem
 {
+	private final static int WIDTH = 1200;
+
 	private String text;
 
 	private static final String EMPTYTEXT = "No Text Given";
