@@ -119,12 +119,12 @@ public class XMLAccessor extends Accessor
 	{
 		int level = 1; // default
 		NamedNodeMap attributes = item.getAttributes();
-		String leveltext = attributes.getNamedItem(LEVEL).getTextContent();
-		if (leveltext != null)
+		String levelText = attributes.getNamedItem(LEVEL).getTextContent();
+		if (levelText != null)
 		{
 			try
 			{
-				level = Integer.parseInt(leveltext);
+				level = Integer.parseInt(levelText);
 			}
 			catch(NumberFormatException x) {
 				System.err.println(NFE);
