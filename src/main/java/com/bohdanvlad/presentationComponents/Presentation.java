@@ -32,6 +32,7 @@ public class Presentation
 		clear();
 	}
 
+	//implementation of Singleton(synchronised, volatile)
 	public static Presentation getPresentation()
 	{
 		Presentation result = presentation;
