@@ -14,11 +14,13 @@
             <version>5.8.1</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-checkstyle-plugin</artifactId>
             <version>3.3.1</version>
         </dependency>
+
     </dependencies>
 
     <build>
@@ -58,7 +60,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.bohdanvlad.Main</mainClass>
+                            <mainClass>com.bohdanvlad.JabberPoint</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
