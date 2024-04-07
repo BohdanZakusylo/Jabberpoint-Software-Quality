@@ -83,6 +83,7 @@ public class Style {
 		}
 		return styles[level];
 	}
+
 	public String toString()
 	{
 		return "["+ indent + "," + color + "; " + fontSize + " on " + leading +"]";

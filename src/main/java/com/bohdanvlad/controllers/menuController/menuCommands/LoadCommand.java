@@ -1,7 +1,6 @@
 package com.bohdanvlad.controllers.menuController.menuCommands;
 
 import com.bohdanvlad.presentationComponents.Presentation;
-
 import java.io.IOException;
 
 public class LoadCommand extends XMLAccessorCommand

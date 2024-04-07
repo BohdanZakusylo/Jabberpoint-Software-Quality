@@ -21,14 +21,7 @@
         <property name="fileExtensions" value="java"/>
     </module>
 
-    <module name="RegexpSingleline">
-        <property name="format" value="^.*Exception$"/>
-        <property name="message" value="Exception classes should end with 'Exception'."/>
-        <property name="fileExtensions" value="java"/>
-    </module>
-
     <module name="TreeWalker">
-        <!-- Add AvoidStarImport module under TreeWalker -->
         <module name="AvoidStarImport">
             <property name="severity" value="warning" />
         </module>
