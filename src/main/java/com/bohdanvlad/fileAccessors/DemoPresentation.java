@@ -61,7 +61,6 @@ public class DemoPresentation extends Accessor
 
 	public void saveFile(Presentation presentation, String unusedFilename)
 	{
-		//TODO create normal exception
 		throw new IllegalStateException("Save As->Demo! called");
 	}
 }

@@ -27,10 +27,6 @@ public abstract class SlideItem
 		this.level = lev;
 	}
 
-	public SlideItem() {
-		this(0);
-	}
-
 // Give the level
 	public int getLevel()
 	{
