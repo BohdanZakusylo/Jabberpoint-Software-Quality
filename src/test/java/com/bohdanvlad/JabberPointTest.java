@@ -3,17 +3,20 @@ package com.bohdanvlad;
 import com.bohdanvlad.fileAccessors.DemoPresentation;
 import com.bohdanvlad.fileAccessors.XMLAccessor;
 import com.bohdanvlad.presentationComponents.Slide;
+import com.bohdanvlad.presentationComponents.SlideViewerComponent;
 import com.bohdanvlad.slideItemCreator.factory.BitmapFactory;
 import com.bohdanvlad.slideItemCreator.factory.SlideItemFactory;
 import com.bohdanvlad.slideItemCreator.factory.TextItemFactory;
 import com.bohdanvlad.slideItemCreator.product.BitmapItem;
 import com.bohdanvlad.slideItemCreator.product.SlideItem;
+import com.bohdanvlad.slideItemCreator.product.TextItem;
 import com.bohdanvlad.style.Style;
 import org.junit.jupiter.api.Test;
 import com.bohdanvlad.presentationComponents.Presentation;
 import org.junit.jupiter.api.BeforeEach;
 import java.awt.*;
 import java.io.FileNotFoundException;
+import javax.swing.JFrame;
 import static org.junit.jupiter.api.Assertions.*;
 
 class JabberPointTest
@@ -26,6 +29,8 @@ class JabberPointTest
     private SlideItem bitmapItem;
     private Slide slide1;
     private Style style1;
+    private SlideViewerComponent slideViewerComponent;
+    private JFrame frame;
 
     @BeforeEach
     void setup()
@@ -37,6 +42,9 @@ class JabberPointTest
         this.xmlAccessor = new XMLAccessor();
         this.slide1 = new Slide();
         this.bitmapItem = this.bitmapFactory.createSlideItem(1, "some String");
+        this.style1 = new Style(1, Color.blue, 12, 10);
+        this.frame = new JFrame();
+        this.slideViewerComponent = new SlideViewerComponent(this.presentation1, frame);
     }
 
 
@@ -50,13 +58,14 @@ class JabberPointTest
     @Test
     void testBitMapItem_exceptionDoesntThrows()
     {
-        assertDoesNotThrow(()-> this.bitmapFactory.createSlideItem(1, "String"));
+        assertDoesNotThrow(() -> this.bitmapFactory.createSlideItem(1, "String"));
     }
+
     //Tests XMLAccessor loadFile
     @Test
     void testXMLAccessor_loadFile_fileExists_shouldNotThrow()
     {
-        assertDoesNotThrow(()-> this.xmlAccessor.loadFile(this.presentation1, "test.xml"));
+        assertDoesNotThrow(() -> this.xmlAccessor.loadFile(this.presentation1, "test.xml"));
     }
 
     @Test
@@ -64,60 +73,64 @@ class JabberPointTest
     {
 
         //Catches FileNotFoundException locally if filename is wrong
-        assertDoesNotThrow(()-> this.xmlAccessor.loadFile(this.presentation1, "testFile.xml"));
+        assertDoesNotThrow(() -> this.xmlAccessor.loadFile(this.presentation1, "testFile.xml"));
     }
 
     @Test
     void testXMLAccessor_loadFile_invalidPresentationInputNull_shouldThrow()
     {
         Presentation presentation = null;
-        assertThrows(NullPointerException.class, ()-> this.xmlAccessor.loadFile(presentation, "test.xml"));
+        assertThrows(NullPointerException.class, () -> this.xmlAccessor.loadFile(presentation, "test.xml"));
     }
+
     //Tests XMLAccessor saveFile
     @Test
     void testXMLAccessor_saveFile_shouldNotThrow()
     {
-        assertDoesNotThrow(()-> this.xmlAccessor.saveFile(this.presentation1, "testSave.xml"));
+        assertDoesNotThrow(() -> this.xmlAccessor.saveFile(this.presentation1, "testSave.xml"));
     }
 
     @Test
     void testXMLAccessor_saveFile_invalidPresentationInputNull_shouldThrow()
     {
         Presentation presentation = null;
-        assertThrows(NullPointerException.class, ()-> this.xmlAccessor.loadFile(presentation, "test.xml"));
+        assertThrows(NullPointerException.class, () -> this.xmlAccessor.loadFile(presentation, "test.xml"));
     }
 
     @Test
     void testXMLAccessor_saveFile_invalidFileNameInputNull_shouldThrow()
     {
-        assertThrows(NullPointerException.class, ()-> this.xmlAccessor.loadFile(this.presentation1, null));
+        assertThrows(NullPointerException.class, () -> this.xmlAccessor.loadFile(this.presentation1, null));
     }
 
     @Test
     void testXMLAccessor_saveFile_invalidAllInputNull_shouldThrow()
     {
         Presentation presentation = null;
-        assertThrows(NullPointerException.class, ()-> this.xmlAccessor.loadFile(presentation, null));
+        assertThrows(NullPointerException.class, () -> this.xmlAccessor.loadFile(presentation, null));
     }
+
     //Tests DemoPresentation loadFile
     @Test
     void testDemoPresentation_loadFile_invalidPresentationInputNull_shouldThrow()
     {
         Presentation presentation = null;
-        assertThrows(NullPointerException.class, ()-> this.demoPresentation1.loadFile(presentation, "fileName"));
+        assertThrows(NullPointerException.class, () -> this.demoPresentation1.loadFile(presentation, "fileName"));
     }
 
     @Test
     void testDemoPresentation_loadFile_validInput_shouldNotThrow()
     {
-        assertDoesNotThrow(()-> this.demoPresentation1.loadFile(this.presentation1, "fileName"));
+        assertDoesNotThrow(() -> this.demoPresentation1.loadFile(this.presentation1, "fileName"));
     }
+
     //Tests DemoPresentation saveFile
     @Test
     void test_DemoPresentation_saveFile_shouldThrow()
     {
-        assertThrows(IllegalStateException.class, ()-> this.demoPresentation1.saveFile(this.presentation1, "unusedFile"));
+        assertThrows(IllegalStateException.class, () -> this.demoPresentation1.saveFile(this.presentation1, "unusedFile"));
     }
+
     //Tests Presentation getSlide
     @Test
     void test_Presentation_getSlide_nonExistingSlide_shouldReturnNull()
@@ -176,7 +189,7 @@ class JabberPointTest
     }
 
     @Test
-    void testClear_ArrayListSlideBecomesEmpty ()
+    void testClear_ArrayListSlideBecomesEmpty()
     {
         this.presentation1.append(this.slide1);
         this.presentation1.clear();
@@ -204,4 +217,121 @@ class JabberPointTest
         this.presentation1.append(this.slide1);
         assertEquals(4, this.presentation1.getSize());
     }
+
+    @Test
+    void testGetFontByScaleAndFont_AssertEquals()
+    {
+        float randomScale = 1.5f;
+        assertEquals(18, this.style1.getFont(randomScale).getSize());
+    }
+
+    @Test
+    void testGetFontByScaleAndFont_RandomNumber_AssertNotEquals()
+    {
+        float randomScale = 1.5f;
+        assertNotEquals(1, this.style1.getFont(randomScale).getSize());
+    }
+
+    @Test
+    void testStyletoString_AssertEquals()
+    {
+        assertEquals("[1,java.awt.Color[r=0,g=0,b=255]; 12 on 10]", this.style1.toString());
+    }
+
+    @Test
+    void testStyletoString_RandomString_AssertNotEquals()
+    {
+        assertNotEquals("random string", this.style1.toString());
+    }
+
+    @Test
+    void testBitmapItemtoString_ActualString_AssertEquals()
+    {
+        assertEquals("BitmapItem[1,some String]", this.bitmapItem.toString());
+    }
+
+    @Test
+    void testBitmapItemtoString_RandomString_AssertNotEquals()
+    {
+        assertNotEquals("random string", this.bitmapItem.toString());
+    }
+
+    //testing factory methods with instance of
+    @Test
+    void testBitmapFactory_CreatesTheCorrectType_AssertTrue()
+    {
+        SlideItem bitmapItem = this.bitmapFactory.createSlideItem(1, "String");
+        assertTrue(bitmapItem instanceof BitmapItem);
+    }
+
+    @Test
+    void testBitmapFactory_CreateIncorrectTypeTextItem_AssertFalse()
+    {
+        SlideItem bitmapItem = this.bitmapFactory.createSlideItem(1, "String");
+        assertFalse(bitmapItem instanceof TextItem);
+    }
+
+    @Test
+    void testTextItemFactory_CreateCorrectType_AssertTrue()
+    {
+        SlideItem textItem = this.textItemFactory.createSlideItem(1, "String");
+        assertTrue(textItem instanceof TextItem);
+    }
+
+    @Test
+    void testTextItemFactory_CreateIncorrectTypeTextItem_AssertFalse()
+    {
+        SlideItem textItem = this.textItemFactory.createSlideItem(1, "String");
+        assertFalse(textItem instanceof BitmapItem);
+    }
+
+    //testing sliderViewerComponent
+
+    @Test
+    void testSliderViewerComponentUpdate_AppendSlide_SlideIsThere()
+    {
+        this.slideViewerComponent.update(this.presentation1, this.slide1);
+        assertEquals(this.slide1, this.slideViewerComponent.getSlide());
+    }
+
+    @Test
+    void testSliderViewerComponentUpdate_AppendPresentation_ExactPresentationIsThere()
+    {
+        this.slideViewerComponent.update(this.presentation1, this.slide1);
+        assertEquals(this.presentation1, this.slideViewerComponent.getPresentation());
+    }
+
+    @Test
+    void testSLideCreation_VectorSlideItemISEmpty_AssertTrue()
+    {
+        assertTrue(this.slide1.getSlideItems().isEmpty());
+    }
+
+    @Test
+    void testSLideAppend_AppendElementCheckIfItIsThere_AssertTrue()
+    {
+        //as the previous test passed and Vector<SlideItem> is empty, I can take the first element for test
+        this.slide1.append(1, "String");
+        assertNotNull(this.slide1.getSlideItems().firstElement());
+    }
+
+    @Test
+    void testSLideAppend_AppendItShouldBeTextItem_AssertTrue()
+    {
+        //as the penultimate test passed and Vector<SlideItem> is empty, I can take the first element for test
+        this.slide1.append(1, "String");
+        assertTrue(this.slide1.getSlideItems().firstElement() instanceof TextItem);
+    }
+
+    @Test
+    void testSlideAppend_AppendOneSlideItemSizeShouldBeOne_AssertTrue()
+    {
+        this.slide1.append(1, "String");
+        assertEquals(this.slide1.getSlideItems().size(), 1);
+    }
+
+    @Test
+    void
+
+
 }
