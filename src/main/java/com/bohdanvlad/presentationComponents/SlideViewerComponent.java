@@ -52,6 +52,12 @@ public class SlideViewerComponent extends JComponent
 		return this.slide;
 	}
 
+	public Font getFont()
+	{
+		return this.labelFont;
+	}
+
+
 	public Presentation getPresentation()
 	{
 		return this.presentation;
@@ -73,7 +79,14 @@ public class SlideViewerComponent extends JComponent
 		this.presentation = presentation;
 		this.slide = data;
 		repaint();
-		this.frame.setTitle(presentation.getTitle());
+		try
+		{
+			this.frame.setTitle(presentation.getTitle());
+		}
+		catch (NullPointerException e)
+		{
+			throw new IllegalArgumentException("Presentation can not be null");
+		}
 	}
 
 // draw the slide

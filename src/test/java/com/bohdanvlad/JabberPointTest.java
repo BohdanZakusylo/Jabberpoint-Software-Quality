@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import com.bohdanvlad.presentationComponents.Presentation;
 import org.junit.jupiter.api.BeforeEach;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import javax.swing.JFrame;
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,6 +32,8 @@ class JabberPointTest
     private Style style1;
     private SlideViewerComponent slideViewerComponent;
     private JFrame frame;
+    private BufferedImage image;
+    private Graphics graphics;
 
     @BeforeEach
     void setup()
@@ -45,6 +48,8 @@ class JabberPointTest
         this.style1 = new Style(1, Color.blue, 12, 10);
         this.frame = new JFrame();
         this.slideViewerComponent = new SlideViewerComponent(this.presentation1, frame);
+        this.image = new BufferedImage(Slide.WIDTH, Slide.HEIGHT, BufferedImage.TYPE_INT_RGB);
+        this.graphics = image.getGraphics();
     }
 
 
@@ -53,6 +58,18 @@ class JabberPointTest
     {
         //the array before initialisation should be empty
         assertEquals(0, this.presentation1.getSize());
+    }
+
+    @Test
+    void testInitialPresentation_CurrentSlideShouldBeNull_AssertNull()
+    {
+        assertNull(this.presentation1.getCurrentSlide());
+    }
+
+    @Test
+    void testInitialPresentation_CurrentSlideNumberShouldBeMinusOne_AssertEquals()
+    {
+        assertEquals(-1, this.presentation1.getSlideNumber());
     }
 
     @Test
@@ -197,10 +214,82 @@ class JabberPointTest
     }
 
     @Test
+    void testPresentationClear_SlideNumberShouldBeMinus1_AssertEquals()
+    {
+        Slide slide2 = new Slide();
+        this.presentation1.append(this.slide1);
+        this.presentation1.append(slide2);
+
+        this.presentation1.setSlideNumber(0);
+        //doing it for 3 times to make sure
+        this.presentation1.clear();
+
+        assertEquals(-1, this.presentation1.getSlideNumber());
+    }
+
+    @Test
     void testAmountOfPresentation_DemoPresentationAppends_AssertEquals()
     {
         this.demoPresentation1.loadFile(this.presentation1, "unusedString");
         assertEquals(3, this.presentation1.getSize());
+    }
+
+    @Test
+    void testPresentationPrevSlide_SLideNumber0_AssertEquals()
+    {
+        Slide slide2 = new Slide();
+        this.presentation1.append(this.slide1);
+        this.presentation1.append(slide2);
+
+        this.presentation1.setSlideNumber(1);
+        this.presentation1.prevSlide();
+
+        assertEquals(0, this.presentation1.getSlideNumber());
+    }
+
+    @Test
+    void testPresentationPrevSlideThreeTimes_SLideShouldNotGoBellow0_AssertEquals()
+    {
+        Slide slide2 = new Slide();
+        this.presentation1.append(this.slide1);
+        this.presentation1.append(slide2);
+
+        this.presentation1.setSlideNumber(1);
+        //doing it for 3 times to make sure
+        this.presentation1.prevSlide();
+        this.presentation1.prevSlide();
+        this.presentation1.prevSlide();
+
+        assertEquals(0, this.presentation1.getSlideNumber());
+    }
+
+    @Test
+    void testPresentationNextSlide_SLideShouldBe1_AssertEquals()
+    {
+        Slide slide2 = new Slide();
+        this.presentation1.append(this.slide1);
+        this.presentation1.append(slide2);
+
+        this.presentation1.setSlideNumber(0);
+        this.presentation1.nextSlide();
+
+        assertEquals(1, this.presentation1.getSlideNumber());
+    }
+
+    @Test
+    void testPresentationNextSlideThreeTimes_SLideShouldNotBeBigger1_AssertEquals()
+    {
+        Slide slide2 = new Slide();
+        this.presentation1.append(this.slide1);
+        this.presentation1.append(slide2);
+
+        this.presentation1.setSlideNumber(0);
+        //doing it for 3 times to make sure
+        this.presentation1.nextSlide();
+        this.presentation1.nextSlide();
+        this.presentation1.nextSlide();
+
+        assertEquals(1, this.presentation1.getSlideNumber());
     }
 
     @Test
@@ -295,6 +384,55 @@ class JabberPointTest
     }
 
     @Test
+    void testSliderViewerComponentUpdate_AppendSlideAsNull_SlideIsNull_AssertNull()
+    {
+        this.slideViewerComponent.update(this.presentation1, null);
+        assertNull(this.slideViewerComponent.getSlide());
+    }
+
+    @Test
+    void testSliderViewerComponentUpdate_AppendPresentationAsNull_AssertThrows()
+    {
+        assertThrows(IllegalArgumentException.class, ()-> this.slideViewerComponent.update(null, this.slide1));
+    }
+
+    @Test
+    void testSliderViewerComponentPaint_ColorShouldBeBlack_AssertEquals()
+    {
+        slideViewerComponent.paintComponent(this.graphics);
+        assertEquals(Color.white, this.graphics.getColor());
+    }
+
+    @Test
+    void testSliderViewerComponentInitialFont_FontShouldBeTheSame_AssertEquals()
+    {
+        assertEquals(new Font("Dialog", Font.BOLD, 10), this.slideViewerComponent.getFont());
+    }
+
+    @Test
+    void testSliderViewerComponentUpdate_AppendPresentationNotNull_AssertDoesntThrow()
+    {
+        assertDoesNotThrow(() -> this.slideViewerComponent.update(this.presentation1, this.slide1));
+    }
+    @Test
+    void testInitialDimensionSetup_DimensionWidthHeight_AssertEquals()
+    {
+        assertEquals(new Dimension(Slide.WIDTH, Slide.HEIGHT), this.slideViewerComponent.getPreferredSize());
+    }
+
+    @Test
+    void testInitialSetupSlide_SlideIsNull_AssertNull()
+    {
+        assertNull(this.slideViewerComponent.getSlide());
+    }
+
+    @Test
+    void testInitialBackgroundColorSetup_BackgroundWhite_AssertEquals()
+    {
+        assertEquals(Color.white, this.slideViewerComponent.getBackground());
+    }
+
+    @Test
     void testSliderViewerComponentUpdate_AppendPresentation_ExactPresentationIsThere()
     {
         this.slideViewerComponent.update(this.presentation1, this.slide1);
@@ -324,14 +462,11 @@ class JabberPointTest
     }
 
     @Test
-    void testSlideAppend_AppendOneSlideItemSizeShouldBeOne_AssertTrue()
+    void testSlideAppendSize_AppendOneSlideItemSizeShouldBeOne_AssertTrue()
     {
         this.slide1.append(1, "String");
         assertEquals(this.slide1.getSlideItems().size(), 1);
     }
 
-    @Test
-    void
-
-
+    //Now the main function should be tested
 }
