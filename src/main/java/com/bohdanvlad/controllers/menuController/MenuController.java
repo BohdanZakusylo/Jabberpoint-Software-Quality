@@ -154,6 +154,27 @@ public class MenuController extends MenuBar
 		return new MenuItem(name, new MenuShortcut(name.charAt(0)));
 	}
 
+	public HashMap<String, Command> getCommands()
+	{
+		return commands;
+	}
+
+	public void setCommands(HashMap<String, Command> commands)
+	{
+		this.commands = commands;
+	}
+
+	@Override
+	public Frame getParent()
+	{
+		return parent;
+	}
+
+	public void setParent(Frame parent)
+	{
+		this.parent = parent;
+	}
+
 	public void executeCommand(String command, String filename)
 	{
 		if (!this.commands.containsKey(command)){return;}
