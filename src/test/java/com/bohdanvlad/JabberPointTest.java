@@ -393,7 +393,7 @@ class JabberPointTest
     @Test
     void testSliderViewerComponentUpdate_AppendPresentationAsNull_AssertThrows()
     {
-        assertThrows(IllegalArgumentException.class, ()-> this.slideViewerComponent.update(null, this.slide1));
+        assertThrows(IllegalArgumentException.class, () -> this.slideViewerComponent.update(null, this.slide1));
     }
 
     @Test
@@ -414,6 +414,7 @@ class JabberPointTest
     {
         assertDoesNotThrow(() -> this.slideViewerComponent.update(this.presentation1, this.slide1));
     }
+
     @Test
     void testInitialDimensionSetup_DimensionWidthHeight_AssertEquals()
     {
@@ -467,6 +468,4 @@ class JabberPointTest
         this.slide1.append(1, "String");
         assertEquals(this.slide1.getSlideItems().size(), 1);
     }
-
-    //Now the main function should be tested
 }
