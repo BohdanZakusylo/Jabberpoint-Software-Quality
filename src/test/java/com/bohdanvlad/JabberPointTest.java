@@ -468,12 +468,4 @@ class JabberPointTest
         this.slide1.append(1, "String");
         assertEquals(this.slide1.getSlideItems().size(), 1);
     }
-
-    //main function tests
-
-//    @Test
-//    void testJabberPoint_MainFunction()
-//    {
-//        JabberPoint.main();
-//    }
 }
