@@ -1,5 +1,10 @@
 package com.bohdanvlad;
 
+import com.bohdanvlad.controllers.Command;
+import com.bohdanvlad.controllers.keyController.KeyController;
+import com.bohdanvlad.controllers.keyController.keyCommands.ExitCommand;
+import com.bohdanvlad.controllers.menuController.MenuController;
+import com.bohdanvlad.controllers.menuController.menuCommands.GoToCommand;
 import com.bohdanvlad.fileAccessors.DemoPresentation;
 import com.bohdanvlad.fileAccessors.XMLAccessor;
 import com.bohdanvlad.presentationComponents.Slide;
@@ -15,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import com.bohdanvlad.presentationComponents.Presentation;
 import org.junit.jupiter.api.BeforeEach;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import javax.swing.JFrame;
@@ -468,4 +474,130 @@ class JabberPointTest
         this.slide1.append(1, "String");
         assertEquals(this.slide1.getSlideItems().size(), 1);
     }
+
+    @Test
+    public void testNextSlideCommand_threeSlides_twoPageDowns_shouldBeOne() {
+        Presentation presentation = new Presentation();
+        presentation.append(this.slide1);
+        presentation.append(new Slide());
+        presentation.append(new Slide());
+
+        KeyController keyController = new KeyController(presentation);
+
+        keyController.executeCommand(KeyEvent.VK_PAGE_DOWN);
+        keyController.executeCommand(KeyEvent.VK_PAGE_DOWN);
+        assertEquals(1, presentation.getSlideNumber());
+    }
+
+    @Test
+    public void testPrevSlideCommand_twoSlides_onePageDown_onePageUp_shouldBeZero() {
+        Presentation presentation = new Presentation();
+        presentation.append(this.slide1);
+        presentation.append(new Slide());
+
+        KeyController keyController = new KeyController(presentation);
+
+        keyController.executeCommand(KeyEvent.VK_PAGE_DOWN);
+        keyController.executeCommand(KeyEvent.VK_PAGE_UP);
+        assertEquals(0, presentation.getSlideNumber());
+    }
+
+    @Test
+    public void testPrevSlideCommand_noSlides_shouldBeMinusOne() {
+        Presentation presentation = new Presentation();
+
+        KeyController keyController = new KeyController(presentation);
+
+        keyController.executeCommand(KeyEvent.VK_PAGE_UP);
+        assertEquals(-1, presentation.getSlideNumber());
+    }
+
+    @Test
+    public void testPrevSlideCommand_oneSlide_multiplePageDowns_shouldBeZero() {
+        Presentation presentation = new Presentation();
+        presentation.append(this.slide1);
+
+        KeyController keyController = new KeyController(presentation);
+
+        keyController.executeCommand(KeyEvent.VK_PAGE_DOWN);
+        keyController.executeCommand(KeyEvent.VK_PAGE_DOWN);
+        keyController.executeCommand(KeyEvent.VK_PAGE_DOWN);
+        keyController.executeCommand(KeyEvent.VK_PAGE_DOWN);
+        assertEquals(0, presentation.getSlideNumber());
+    }
+
+    @Test
+    public void testPrevSlideCommand_oneSlide_multiplePageUps_shouldBeMinusOne() {
+        Presentation presentation = new Presentation();
+        presentation.append(this.slide1);
+
+        KeyController keyController = new KeyController(presentation);
+
+        keyController.executeCommand(KeyEvent.VK_PAGE_UP);
+        keyController.executeCommand(KeyEvent.VK_PAGE_UP);
+        keyController.executeCommand(KeyEvent.VK_PAGE_UP);
+        keyController.executeCommand(KeyEvent.VK_PAGE_UP);
+        assertEquals(-1, presentation.getSlideNumber());
+    }
+
+    @Test
+    public void keyController_testAddCommand() {
+        Presentation presentation = new Presentation();
+        KeyController keyController = new KeyController(presentation);
+
+        Command command = new ExitCommand(presentation);
+
+        keyController.addCommand(KeyEvent.VK_ESCAPE, command);
+
+        assertTrue(keyController.getCommands().containsKey(KeyEvent.VK_ESCAPE));
+        assertEquals(command, keyController.getCommands().get(KeyEvent.VK_ESCAPE));
+    }
+
+    @Test
+    public void keyController_testRemoveCommand() {
+        Presentation presentation = new Presentation();
+        KeyController keyController = new KeyController(presentation);
+
+        Command command = new ExitCommand(presentation);
+
+        keyController.addCommand(KeyEvent.VK_ESCAPE, command);
+
+        assertTrue(keyController.getCommands().containsKey(KeyEvent.VK_ESCAPE));
+
+        keyController.removeCommand(KeyEvent.VK_ESCAPE);
+
+        assertFalse(keyController.getCommands().containsKey(KeyEvent.VK_ESCAPE));
+    }
+
+    @Test
+    public void menuController_testAddCommand() {
+        Presentation presentation = new Presentation();
+        MenuController menuController = new MenuController(null, presentation);
+
+        Command command = new ExitCommand(presentation);
+
+        menuController.addCommand("Exit", command);
+
+        assertTrue(menuController.getCommands().containsKey("Exit"));
+        assertEquals(command, menuController.getCommands().get("Exit"));
+    }
+
+    @Test
+    public void menuController_testRemoveCommand() {
+        Presentation presentation = new Presentation();
+        MenuController menuController = new MenuController(null, presentation);
+
+        Command command = new GoToCommand(presentation);
+
+        menuController.addCommand("Go to", command);
+
+        assertTrue(menuController.getCommands().containsKey("Go to"));
+
+        // Remove the command
+        menuController.removeCommand("Go to");
+
+        assertFalse(menuController.getCommands().containsKey("Go to"));
+    }
+
 }
+
