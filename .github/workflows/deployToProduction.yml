@@ -23,11 +23,23 @@ jobs:
           distribution: 'adopt'
           cache: maven
 
+      - name: Install xvfb
+        run: sudo apt-get update && sudo apt-get install -y xvfb
+
+      - name: Start xvfb
+        run: |
+          Xvfb :99 -ac &
+          export DISPLAY=:99
+
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+        env:
+          DISPLAY: :99
 
       - name: Run tests with Maven
-        run: mvn -B package test --file pom.xml
+        run: mvn -B test --file pom.xml
+        env:
+          DISPLAY: :99
 
       - name: JAR Snapshot Uploading
         if: always()
