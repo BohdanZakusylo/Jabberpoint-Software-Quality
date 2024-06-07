@@ -22,7 +22,6 @@ import org.junit.jupiter.api.BeforeEach;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
 import javax.swing.JFrame;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -177,6 +176,13 @@ class JabberPointTest
         pres.append(new Slide());
         pres.append(new Slide());
         assertNotEquals(null, pres.getSlide(0));
+    }
+
+    //test Main Function in JabberPoint
+    @Test
+    void testMain_NoExceptionAreThrown_AssertDoesntThrow()
+    {
+        assertDoesNotThrow(()-> JabberPoint.main(new String[] {}));
     }
 
     @Test
@@ -598,6 +604,5 @@ class JabberPointTest
 
         assertFalse(menuController.getCommands().containsKey("Go to"));
     }
-
 }
 
