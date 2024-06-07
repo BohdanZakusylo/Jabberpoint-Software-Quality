@@ -41,6 +41,16 @@ public class KeyController extends KeyAdapter
 		this.commands.put(KeyEvent.VK_Q, new ExitCommand(p));
 	}
 
+	public HashMap<Object, Command> getCommands()
+	{
+		return commands;
+	}
+
+	public void setCommands(HashMap<Object, Command> commands)
+	{
+		this.commands = commands;
+	}
+
 	public void keyPressed(KeyEvent keyEvent)
 	{
 		executeCommand(keyEvent.getKeyCode());
